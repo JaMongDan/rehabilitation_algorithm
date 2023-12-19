@@ -19,18 +19,15 @@ public class BOJ_14719 {
         }
 
         int result = 0;
+        int left = block[0];
+        int right = getRight(2, W, block);
         for(int i = 1; i<W-1; i++){ // 첫, 마지막은 안됨
 
-            int left = 0;
-            int right = 0;
-
-            for(int j = i+1; j<W; j++){
-                right = Math.max(right, block[j]); // 오른쪽에서 젤 큰 애
+            if(right == block[i]){
+                right = getRight(i, W, block); // 오른쪽에서 젤 큰 애
             }
 
-            for(int j = 0; j<i; j++){ // 왼쪽에서 젤 큰애
-                left = Math.max(left, block[j]);
-            }
+            left = Math.max(left, block[i]);
 
             if(block[i] >= right || block[i] >= left) continue; // 현재 블록이 가장 클 경우 빗물을 계산하지 않는다.
 
@@ -43,5 +40,15 @@ public class BOJ_14719 {
 
 
 
+    }
+
+    private static int getRight(int i, int w, int[] block) {
+        int right = 0;
+
+        for(int idx = i+1; idx<w; idx++)
+        {
+            right = Math.max(right, block[idx]);
+        }
+        return right;
     }
 }
