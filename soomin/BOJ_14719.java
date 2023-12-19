@@ -19,9 +19,10 @@ public class BOJ_14719 {
         }
 
         int result = 0;
-        int left = 0;
-        int right = 0;
         for(int i = 1; i<W-1; i++){ // 첫, 마지막은 안됨
+
+            int left = 0;
+            int right = 0;
 
             for(int j = i+1; j<W; j++){
                 right = Math.max(right, block[j]); // 오른쪽에서 젤 큰 애
@@ -31,10 +32,10 @@ public class BOJ_14719 {
                 left = Math.max(left, block[j]);
             }
 
-            if(block[i] >= right || block[i] >= left) continue;
+            if(block[i] >= right || block[i] >= left) continue; // 현재 블록이 가장 클 경우 빗물을 계산하지 않는다.
 
-            int height = Math.min(right, left); //더 작은 쪽이 최종 높이가 된다
-            result += height - block[i]; // 현재 높이와 물높이의 차를 구해서 result에 더해준다.
+            int height = Math.min(right, left); // 최종 물높이를 정한다.
+            result += height - block[i]; // 현재 블록에서 구할 수 있는 빗물을 구한다.
 
         }
 
