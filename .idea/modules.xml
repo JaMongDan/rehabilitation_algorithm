@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/real_soomin/real_soomin.iml" filepath="$PROJECT_DIR$/real_soomin/real_soomin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rehabilitation_algorithm.iml" filepath="$PROJECT_DIR$/rehabilitation_algorithm.iml" />
+    </modules>
+  </component>
+</project>
