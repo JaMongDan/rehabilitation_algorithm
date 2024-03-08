@@ -45,7 +45,7 @@ public class pg_42898_등굣길 {
             }
         }
 
-        // 최종 경로 계산
+        // 최종 경로
         return answer = (int) memo[n][m];
     }
 }
