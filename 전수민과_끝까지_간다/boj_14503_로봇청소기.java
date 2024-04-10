@@ -4,10 +4,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /*
- * 감소하는 수 - 조합
- * (1) 조합으로 구해야하는 값의 자릿수 선정
- * (2) 해당 자릿수에서 시작 숫자 선정
- * (3) 시작 숫자에서 역순으로 값 구하기
+ * 로봇 청소기 
  * */
 
 public class Main {
