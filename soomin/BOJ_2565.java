@@ -21,12 +21,15 @@ class Wire implements Comparable<Wire> {
 }
 
 public class BOJ_2565 {
+
+    static int[] dp;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
         List<Wire> wireList = new ArrayList<>();
-        int[] dp = new int[N]; // a 전봇대를 기준으로 몇개나 연결할 수 있는지 저장하는 배열
+        dp = new int[N]; // 도착 전봇대(B)를 저장하는 배열
 
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -55,18 +58,32 @@ public class BOJ_2565 {
          * 0~i-1번째 전봇대들을 탐색하면서 i번째 전봇대를 B와 연결해도 되는 지 탐색하는 메소드
          * i번째 전봇대에 연결된 도착 전봇대(B)는 0~i-1번째 전봇대에 연결된 B보다 커야 안켭침
          */
-        int max = 0;
+        int size = 0; // dp 배열의 의미있는 길이
         for (int i = 0; i < N; i++) {
-            dp[i] = 1; // i 이전 값에 + 1을 해야하기 때문에 자기 자신으로 초기화해야합니당
-            Wire now = wireList.get(i);
 
-            for (int j = 0; j < i; j++) {
-                if (now.b > wireList.get(j).b)
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-            }
-            max = Math.max(max, dp[i]);
+            int b = wireList.get(i).b;
+            int pos = binarySearch(0, size, b);
+
+            if (pos < 0) pos = -pos - 1;
+            dp[pos] = b;
+
+            if(pos == size) size++; // dp 배열의 길이를 추가!
+
         }
 
-        System.out.println(N - max); // 철거한 갯수를 출력
+        System.out.println(N - size); // 철거한 갯수를 출력
+    }
+
+    private static int binarySearch(int left, int right, int value) {
+
+
+        while (left < right) {
+            int mid =  (left + right) / 2;
+
+            if (dp[mid] < value) left = mid + 1;
+            else right = mid;
+        }
+
+        return left - 1;
     }
 }
