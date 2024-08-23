@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 public class BOJ_9663 {
 
     static int[] queen;
-    static int[][] move = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
     static int sum = 0, N;
 
     public static void main(String[] args) throws IOException {
