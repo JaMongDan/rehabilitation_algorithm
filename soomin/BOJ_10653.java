@@ -36,16 +36,14 @@ public class BOJ_10653 {
         // 점화식: dp[j][i] = dp[j][i-1] + i-1번째 체크포인트와 i번째 체크포인트의 거리 (i > j)
         // i-1번째 체크포인트까지 j번 건너뛴 상태에서 최솟값 vs i-2번째 체크포인트까지 j-1번 건너뛴 상태에서 최솟값 vs ...
         // 점진적으로 i와 j의 값을 감소시키면서 최솟값을 구합니다.
-        int min;
         for (int i = 1; i < N; i++) { // 첫번째 체크포인트에서 시작하기 때문에 계산할 필요가 없습니다.
             for (int j = 0; j <= K; j++) {
-                min = Integer.MAX_VALUE; // 최솟값을 구하기 위해서 맨 처음 값은 최댓값과 비교한다.
+                dp[j][i] = Integer.MAX_VALUE; // 최솟값을 구하기 위해서 맨 처음 값은 최댓값과 비교한다.
                 for (int k = 0; k <= j; k++) { // k는 i와 j를 감소시키기 위한 변수이다. 건너뛴 횟수에 따라 조정해야하기 때문
                     int index = i - 1 - k;
                     if(index < 0) continue; // points의 배열 범위를 벗어나지 않기 위함임
-                    min = Math.min(dp[j - k][index] + calDistance(points[i], points[index]), min);
+                    dp[j][i] = Math.min(dp[j - k][index] + calDistance(points[i], points[index]), dp[j][i]);
                 }
-                dp[j][i] = min; // 최소 거리를 배열에 저장함다
             }
         }
 
