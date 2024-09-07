@@ -9,13 +9,15 @@ public class BOJ_14500 {
     static int[][] paper;
     static int[][] move = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
+    static int N, M;
+
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
         paper = new int[N+2][M+2];
         for(int i = 1; i<=N; i++){
@@ -32,6 +34,8 @@ public class BOJ_14500 {
                 visited[i][j] = true;
                 dfs(i, j, 1, paper[i][j]);
                 visited[i][j] = false;
+
+                otherShape(i, j);
             }
         }
 
@@ -66,11 +70,11 @@ public class BOJ_14500 {
             if(paper[ny][nx] == 0) continue;
             if(visited[ny][nx]) continue;
 
-            if(depth == 2) {
-                visited[ny][nx] = true;
-                dfs(y, x, depth+1, sum+paper[ny][nx]); // ㅑ ㅗ ㅓ ㅜ 튀어나온 부분을 갔다왔다 치고 기존 y, x 좌표에서 다시 상하좌우로 탐색함
-                visited[ny][nx] = false;
-            }
+//            if(depth == 2) {
+//                visited[ny][nx] = true;
+//                dfs(y, x, depth+1, sum+paper[ny][nx]); // ㅑ ㅗ ㅓ ㅜ 튀어나온 부분을 갔다왔다 치고 기존 y, x 좌표에서 다시 상하좌우로 탐색함
+//                visited[ny][nx] = false;
+//            }
 
             visited[ny][nx] = true;
             dfs(ny, nx, depth+1, sum+paper[ny][nx]);
@@ -78,5 +82,26 @@ public class BOJ_14500 {
 
         }
 
+    }
+
+    /**
+     * ㅏ, ㅗ, ㅓ, ㅜ 모양의 최솟값을 바로 구해서 비교
+     * @param y
+     * @param x
+     */
+    private static void otherShape(int y, int x) {
+        // ㅏ, ㅓ, ㅗ, ㅜ 모양을 만들기 위한 4가지 경우
+        if (y > 1 && x > 1 && x <= M - 1) { // ㅓ 모양
+            max = Math.max(max, paper[y][x] + paper[y - 1][x] + paper[y][x - 1] + paper[y][x + 1]);
+        }
+        if (y > 1 && y <= N - 1 && x > 1) { // ㅏ 모양
+            max = Math.max(max, paper[y][x] + paper[y + 1][x] + paper[y - 1][x] + paper[y][x - 1]);
+        }
+        if (y > 1 && y <= N - 1 && x <= M - 1) { // ㅜ 모양
+            max = Math.max(max, paper[y][x] + paper[y - 1][x] + paper[y + 1][x] + paper[y][x + 1]);
+        }
+        if (y <= N - 1 && x > 1 && x <= M - 1) { // ㅗ 모양
+            max = Math.max(max, paper[y][x] + paper[y + 1][x] + paper[y][x - 1] + paper[y][x + 1]);
+        }
     }
 }
