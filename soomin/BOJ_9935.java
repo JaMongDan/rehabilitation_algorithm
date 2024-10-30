@@ -4,11 +4,16 @@ import java.io.InputStreamReader;
 import java.util.Stack;
 
 public class BOJ_9935 {
+
+    static int len;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String str = br.readLine();
         String explosion = br.readLine();
+
+        len = explosion.length();
 
         // 모든 폭발 문자열이 폭발
         // 남은 문자열을 순서대로 이어 붙여서 새로운 문자열을 만듬
@@ -20,12 +25,12 @@ public class BOJ_9935 {
         for (int i = 0; i < str.length(); i++) {
             stack.push(str.charAt(i));
 
-            if (stack.size() < explosion.length()) continue;
+            if (stack.size() < len) continue;
 
             boolean flag = isSame(explosion, stack);
 
             if (flag) {
-                for (int j = 0; j < explosion.length(); j++) { // 폭발 문자열 제거
+                for (int j = 0; j < len; j++) { // 폭발 문자열 제거
                     stack.pop();
                 }
             }
@@ -45,8 +50,10 @@ public class BOJ_9935 {
     private static boolean isSame(String explosion, Stack<Character> stack) {
         boolean flag = true;
 
+        // 스택의 마지막 부분을 폭발 문자열과 비교
+        // 스택의 끝에서부터 폭발 문자열 길이만큼을 순회하며 각 문자가 일치하는 지 확인한다.
         for (int j = 0; j < explosion.length(); j++) {
-            if (stack.get(stack.size() - explosion.length() + j) != explosion.charAt(j)) {
+            if (stack.get(stack.size() -len + j) != explosion.charAt(j)) { // 스택의 마지막 N(폭발 문자열의 길이)개의 요소를 폭발 문자열과 순서대로 비교
                 flag = false;
                 break; // 폭발 문자열과 다르면 종료
             }
