@@ -1,11 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class BOJ_1976 {
 
-    static int[] parent;
+    static List<Integer>[] list;
+    static int[] plan;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,59 +14,62 @@ public class BOJ_1976 {
         int N = Integer.parseInt(br.readLine()); // 도시수
         int M = Integer.parseInt(br.readLine()); // 계획한 여행지 수
 
-        // 알고리즘 => 집합 만들기? 유니온 파인드
-        // 이유는
 
-        // 부모를 저장할 배열
-        parent = new int[N+1];
-        for(int i = 1; i<=N; i++){
-            parent[i] = i;
+        // 인접리스트 만들기
+        list = new ArrayList[N + 1];
+        for (int i = 0; i <= N; i++) {
+            list[i] = new ArrayList<>();
         }
 
         StringTokenizer st;
-        for(int i =1; i<=N; i++) {
+        for (int i = 1; i <= N; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j = 1; j<=N; j++) {
-
-                if(st.nextToken().equals("1")) {
-                    union(i, j);
-                }
+            for (int j = 1; j <= N; j++) {
+                if (st.nextToken().equals("1") || i == j) // 자기자신도 가능함!!
+                    list[i].add(j);
             }
         }
 
-        st = new StringTokenizer(br.readLine()); // 동혁이의 여행 계획
-        int start = Integer.parseInt(st.nextToken()); // 출발지
-        String result = "YES"; // 여행 계획이 가능한지 여부를 나타낼 변수
-        for(int i = 1; i<M; i++){
-            int next = Integer.parseInt(st.nextToken()); // 다음 여행지
+        // 동혁이의 여행 계획
+        plan = new int[M];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < M; i++) {
+            plan[i] = Integer.parseInt(st.nextToken());
+        }
 
-            // 같은 집합에 속하지 않았다면 실패
-            if(parent[start] != parent[next]) { // 출발지와 다음 여행지가 같은 집합에 속하지 않았다면 실패
-                result = "NO";
+        // bfs
+        // 경유지를 다 거쳐서 가야하므로 반목문으로 경우지마다 가능한지 확인함다.
+        boolean result = true;
+        for(int i = 0; i<M-1; i++){
+            if(!bfs(N, plan[i], plan[i+1])){
+                result = false;
                 break;
             }
         }
 
-        System.out.println(result);
+        System.out.println(result ? "YES" : "NO");
+
     }
 
-    // 집합으로 합침
-    // y의 부모를 x의 부모로 변경?
-    private static void union(int x, int y){
+    private static boolean bfs(int N, int start, int destination) {
+        Queue<Integer> q = new ArrayDeque<>();
+        boolean[] visited = new boolean[N+1];
+        q.add(start);
+        visited[start] = true;
 
-        int px = find(x);
-        int py = find(y);
+        while(!q.isEmpty()) {
+            int now = q.poll();
 
-        if(px != py) {
-            if(px < py) parent[py] = px;
-            else parent[px] = py;
+            for(int next : list[now]) {
+
+                if(next == destination) return true;
+                if(visited[next]) continue;
+
+                visited[next] = true;
+                q.add(next);
+            }
         }
-    }
 
-    // 부모찾기
-    private static int find(int x) {
-        if(parent[x] == x) return x;
-        // 자기 자신이 부모가 아니면 부모를 찾아서 업데이트 함
-        return parent[x] = find(parent[x]);
+        return false;
     }
 }
